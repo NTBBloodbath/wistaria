@@ -65,6 +65,36 @@ Library = '/library'
 #announcement = '#72ff47'
 ```
 
+### Templates
+
+Wistaria provides these templates:
+
+```
+templates
+├── partials
+│   ├── footer.html  <- Footer content
+│   └── nav.html     <- Header navbar
+├── base.html        <- Main template (extends others)
+├── library.html     <- Categories list
+├── book.html        <- Category posts list
+├── default.html     <- Default template for all content
+├── home.html        <- Homepage
+├── journal.html     <- Journal collection
+├── log.html         <- Log collection
+└── entry.html       <- Blog post
+```
+
+To use a template, set the `layout` metadata in your content files. For example, in a journal/log post:
+
+```norg
+layout: entry
+```
+
+> [!TIP]
+>
+> 1. The `library` template is used for the categories listing page, and the `book` template is used for the category posts listing page. You can customize these templates to change how your categories and their posts are displayed.
+> 2. Wistaria expects your journal entries in the `content/journal` directory and your log entries in the `content/log` directory, as specified in the `collections` configuration. Make sure to place your content files accordingly for them to be rendered with the correct templates.
+
 ### MermaidJS Support
 
 Wistaria comes with opt-in support for MermaidJS flowcharts. You can use mermaid charts through embedded HTML in your norg content if you set the `enable_mermaid` option to `true` in the `extra` table of your configuration file:
