@@ -241,6 +241,70 @@
   color: var(--color-primary);
 }
 
+#content :is(h2[id], h3[id], h4[id], h5[id], h6[id]) {
+  scroll-margin-top: 5.5rem;
+}
+
+@media (min-width: 48rem) {
+  #content :is(h2[id], h3[id], h4[id], h5[id], h6[id]) {
+    scroll-margin-top: 1.25rem;
+  }
+}
+
+@keyframes tocHeadingScale {
+  0% {
+    transform: scale(1);
+  }
+  12% {
+    transform: scale(1.034);
+  }
+  55% {
+    transform: scale(1.016);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes tocMarkerSweep {
+  0% {
+    clip-path: inset(0 100% 0 0 round 5px);
+    opacity: 1;
+  }
+  28% {
+    clip-path: inset(0 0% 0 0 round 5px);
+    opacity: 1;
+  }
+  68% {
+    clip-path: inset(0 0% 0 0 round 5px);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0% 0 0 round 5px);
+    opacity: 0;
+  }
+}
+
+.toc-heading-highlight {
+  position: relative;
+  z-index: 0;
+  animation: tocHeadingScale 3s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+  transform-origin: left center;
+  will-change: transform;
+  isolation: isolate;
+}
+
+.toc-heading-highlight::before {
+  content: "";
+  position: absolute;
+  inset: -3px -8px;
+  background: color-mix(in srgb, var(--color-violet) 30%, transparent);
+  border-radius: 5px;
+  z-index: -1;
+  pointer-events: none;
+  animation: tocMarkerSweep 3s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+}
+
 .wistaria-toc-panel {
   @apply rounded-xl border border-border bg-surface/70 backdrop-blur-sm shadow-xs px-3 py-3;
 }
@@ -283,11 +347,11 @@
 }
 
 .wistaria-toc-nav li[data-active-trail="true"] > a {
-  @apply text-text;
+  @apply text-text font-semibold;
 }
 
 .wistaria-toc-nav a[data-active="true"] {
-  @apply bg-primary/15 text-primary font-semibold;
+  @apply bg-violet/40 text-primary font-semibold;
 }
 
 .wistaria-toc-fab {

@@ -107,11 +107,30 @@
                   return;
                 }
 
+                event.preventDefault();
+
                 const targetId = decodeURIComponent(link.getAttribute("href").slice(1));
-                if (targetId) {
-                  this.activeId = targetId;
-                  this.applyActiveState();
+                if (!targetId) {
+                  return;
                 }
+
+                const targetHeading =
+                  this.headings.find((heading) => heading.id === targetId) ||
+                  this.$root.querySelector(`#content #${CSS.escape(targetId)}`);
+
+                if (!targetHeading) {
+                  return;
+                }
+
+                this.activeId = targetId;
+                this.applyActiveState();
+                this.triggerHeadingHighlight(targetHeading);
+
+                const encodedId = encodeURIComponent(targetId);
+                if (window.location.hash !== `#${encodedId}`) {
+                  window.history.pushState(null, "", `#${encodedId}`);
+                }
+                targetHeading.scrollIntoView({ behavior: "smooth", block: "start" });
 
                 if (this.isMobile) {
                   this.open = false;
@@ -136,6 +155,22 @@
                 }
 
                 this.headings = Array.from(content.querySelectorAll("h2[id], h3[id], h4[id], h5[id], h6[id]"));
+              },
+
+              triggerHeadingHighlight(heading) {
+                heading.classList.remove("toc-heading-highlight");
+                void heading.offsetWidth;
+                heading.classList.add("toc-heading-highlight");
+
+                const token = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+                heading.dataset.tocHighlightToken = token;
+
+                window.setTimeout(() => {
+                  if (heading.dataset.tocHighlightToken === token) {
+                    heading.classList.remove("toc-heading-highlight");
+                    delete heading.dataset.tocHighlightToken;
+                  }
+                }, 3000);
               },
 
               updateActiveFromViewport() {
@@ -171,7 +206,7 @@
                   },
                   {
                     root: null,
-                    rootMargin: "-28% 0px -60% 0px",
+                    rootMargin: "-10% 0px -70% 0px",
                     threshold: [0, 1]
                   }
                 );
