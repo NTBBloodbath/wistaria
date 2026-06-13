@@ -1,10 +1,128 @@
-# Wisteria
-A soft theme with lavender tones and a personal notebook feel
+# Wistaria
+
+A soft theme with lavender tones and a personal notebook feel. It comes with two collections: `journal` for longer, more polished articles and essays, and `log` for shorter, more informal notes, thoughts, and micro-entries. Wistaria is designed to be a cozy digital space for your writing, with a focus on readability and aesthetics.
 
 ## Installation
+
 ```bash
-lith theme pull github:NTBBloodbath/wisteria
+lith theme pull github:NTBBloodbath/wistaria
 ```
 
+> [!IMPORTANT]
+>
+> Wistaria requires a Norgolith build with [this commit](https://github.com/NTBBloodbath/norgolith/commit/e6d1a5cc75b7fc3c13e3945f0115d51631f68668) in order to work.
+
+## Usage
+
+After installing, configure your site as described below. If you plan to modify the CSS, see the [Tailwind Reloading](#tailwind-reloading) section.
+
+### Configuration
+
+Add the following fields to your `norgolith.toml`:
+
+```toml
+# Categories directory
+categoriesDir = 'library'
+
+# Posts collections
+# Journal: Longer, more polished articles and essays.
+# Log: Shorter, more informal notes, thoughts, and micro-entries.
+[[collections]]
+name = 'journal'
+dir  = 'journal'
+
+[[collections]]
+name = 'log'
+dir  = 'log'
+
+[extra]
+license = "GPLv2" # Optional
+favicon_path = "/assets/norgolith.svg" # Fallback to default favicon
+footer_author_link = "https://github.com/NTBBloodbath" # Optional
+enable_mermaid = true # Enable Mermaid.js for diagrams
+
+[extra.nav]
+Journal = '/journal'
+Log = '/log'
+Library = '/library'
+# About = '/about'
+
+[extra.footer]
+# Link_name = "url"
+# GitHub = "https://github.com/NTBBloodbath/norgolith"
+
+# Tag colors: accepts either theme color tokens or raw CSS color values.
+#
+# Theme tokens (adapt automatically to dark mode):
+#   primary, secondary, green, blue, violet, yellow, red
+#
+# Raw CSS values (static, no dark mode adaptation):
+#   #rrggbb, rgb(...), hsl(...), oklch(...)
+#
+#[extra.tags]
+#log = 'red'
+#essay = 'primary'
+#announcement = '#72ff47'
+```
+
+### MermaidJS Support
+
+Wistaria comes with opt-in support for MermaidJS flowcharts. You can use mermaid charts through embedded HTML in your norg content if you set the `enable_mermaid` option to `true` in the `extra` table of your configuration file:
+
+```org
+@embed html
+<pre class="mermaid">
+  flowchart LR
+  A[HTML Fragment] --> B[Tera Engine]
+  C[Validated Metadata] --> B
+  D[Site Config] --> B
+  E[Post Collection] --> B
+  B --> F[Layout Template]
+  F --> G[Final HTML]
+</pre>
+@end
+```
+
+### Additional Styling
+
+Wistaria provides some additional styling options for blockquotes and code blocks that can be used with `+html.class` tags in your norg content.
+
+#### Blockquotes
+
+- `tip` (green)
+- `note` (blue)
+- `important` (violet)
+- `warning` (yellow)
+- `error` (red)
+
+#### Code Blocks
+
+- `line-numbers` - Adds line numbers to the code block.
+- `diff-highlight` - Highlights added lines in green and removed lines in red (useful for diff outputs).
+
+#### Tags/categories pills
+
+Wistaria provides a `tags` table in the configuration where you can assign colors to specific tags or categories. You can use either theme color tokens (like `primary`, `secondary`, `red`, etc.) or raw CSS color values (like `#rrggbb`, `rgb(...)`, etc.). These colors will be applied to the corresponding tags/categories in your content. For example:
+```toml
+[extra.tags]
+log = 'red'
+essay = 'primary'
+announcement = '#72ff47'
+```
+
+### Tailwind Reloading
+
+By default, Tailwind's configuration in Norgowind watches content files and templates. Each new class added to content using a `+html.class` tag will be included in the styling file.
+
+For site development, install the TailwindCSS CLI and run:
+```sh
+tailwindcss -i theme/assets/css/tailwind.css -o theme/assets/css/styles.min.css --minify --watch
+```
+
+## Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to open an issue or pull request.
+
 ## License
-Wisteria is licensed under MIT license.
+
+Wistaria is licensed under MIT license.
